@@ -13,6 +13,7 @@ const {
   fetchCustomers,
   fetchRestaurants,
   fetchReservations,
+  fetchReservationWName,
   destroyReservation,
 } = require("./db");
 
@@ -65,6 +66,10 @@ const init = async () => {
   });
 
   console.log(await fetchReservations());
+
+  // test the fetchReservationsName - needs parameters
+  // console.log(await fetchReservationWName())
+
 
   // needs to be after the DB create/Seed Calls
   app.listen(PORT, () => {
@@ -123,6 +128,18 @@ app.post("/api/customers/:id/reservations", async (req, res, next) => {
         party_count: req.body.party_count,
       })
     );
+  } catch (ex) {
+    next(ex);
+  }
+});
+
+app.get("/api/reservations/name/:id", async (req, res, next) => {
+  try {
+
+    const temp = await fetchReservationWName({id: req.params.id})
+console.log(temp);
+
+    res.send(temp);
   } catch (ex) {
     next(ex);
   }
